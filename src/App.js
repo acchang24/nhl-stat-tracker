@@ -22,7 +22,7 @@ export default class App extends React.Component {
               <div>Contact page here...</div>
             </Route>
             <Route path="/vote">
-              <div>Vote page here...</div>
+              <div>Vote page here</div>
             </Route>
             <Route path="/teams/:id/:player" component={Player} />
             <Route path="/teams/:id" component={Team} />
