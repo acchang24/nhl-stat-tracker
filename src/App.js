@@ -21,8 +21,8 @@ export default class App extends React.Component {
             <Route path="/contact">
               <div>Contact page here...</div>
             </Route>
-            <Route path="/about">
-              <div>About page here...</div>
+            <Route path="/vote">
+              <div>Vote page here...</div>
             </Route>
             <Route path="/teams/:id/:player" component={Player} />
             <Route path="/teams/:id" component={Team} />
