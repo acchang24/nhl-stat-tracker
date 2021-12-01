@@ -35,7 +35,6 @@ export default class Teams extends React.Component {
             return (
               <div key={i} className="col-12 col-md-6 col-lg-6 card">
                 <h4 className="mt-3">{divisions.division.name} Division</h4>
-
                 <table className="table table-hover">
                   <thead>
                     <tr>

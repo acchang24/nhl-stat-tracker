@@ -82,7 +82,7 @@ export default class Team extends React.Component {
         </div>
 
         <div className="scroll-table mt-5">
-          <table className="table table-bordered">
+          <table className="table table-bordered table-hover">
             <thead>
               <tr>
                 {Object.keys(this.state.stats).map((splits, h) => {
@@ -115,13 +115,13 @@ export default class Team extends React.Component {
               Upcoming Game
               <div className="card container mt-3">
                 <div className="row">
-                  <div className="col">
+                  <div className="col mt-3">
                     <Link to={`/teams/${this.state.gameInfo.dates[0].games[0].teams.away.team.id}`}>
-                      <div><strong>{this.state.gameInfo.dates[0].games[0].teams.away.team.name}</strong></div>
+                      <div className="mb-3"><strong>{this.state.gameInfo.dates[0].games[0].teams.away.team.name}</strong></div>
+                      <img src={`/images/${this.state.gameInfo.dates[0].games[0].teams.away.team.id}.png`} alt="logo" height="150"></img>
                     </Link>
                     {/* <div><strong>{this.state.gameInfo.dates[0].games[0].teams.away.team.name}</strong></div> */}
-                    <img src={`/images/${this.state.gameInfo.dates[0].games[0].teams.away.team.id}.png`} alt="logo" height="150"></img>
-                    <div><h1><strong>{this.state.gameInfo.dates[0].games[0].teams.away.score}</strong></h1></div>
+                    <div className="mt-3"><h1><strong>{this.state.gameInfo.dates[0].games[0].teams.away.score}</strong></h1></div>
                   </div>
                   <div className="col my-auto">
                     <div><h1><strong>@</strong></h1></div>
@@ -132,12 +132,12 @@ export default class Team extends React.Component {
                     </div>
                   </div>
                   
-                  <div className="col">
+                  <div className="col mt-3">
                     <Link to={`/teams/${this.state.gameInfo.dates[0].games[0].teams.home.team.id}`}>
-                      <div><strong>{this.state.gameInfo.dates[0].games[0].teams.home.team.name}</strong></div>
+                      <div className="mb-3"><strong>{this.state.gameInfo.dates[0].games[0].teams.home.team.name}</strong></div>
+                      <img src={`/images/${this.state.gameInfo.dates[0].games[0].teams.home.team.id}.png`} alt="logo" height="150"></img>
                     </Link>
-                    <img src={`/images/${this.state.gameInfo.dates[0].games[0].teams.home.team.id}.png`} alt="logo" height="150"></img>
-                    <div><h1><strong>{this.state.gameInfo.dates[0].games[0].teams.home.score}</strong></h1></div>
+                    <div className="mt-3"><h1><strong>{this.state.gameInfo.dates[0].games[0].teams.home.score}</strong></h1></div>
                   </div>
                 </div>
               </div>
@@ -149,7 +149,7 @@ export default class Team extends React.Component {
 
         <div className="app mt-5">
           <h2>Roster</h2>
-          <table className="table table-bordered">
+          <table className="table table-bordered table-hover">
             <thead>
               <tr>
                 <th scope="col">#</th>
