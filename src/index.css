@@ -18,7 +18,7 @@ code {
 
 .card {
   text-align: center;
-  outline: 1px solid gray;
+  outline: 2px solid gray;
   border-radius: 15px;
   box-shadow: 5px 5px 5px #979797;
 }
@@ -34,6 +34,12 @@ a.active {
 
 .scroll-table {
   overflow-x: auto;
+}
+
+.round {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
 .loader {
