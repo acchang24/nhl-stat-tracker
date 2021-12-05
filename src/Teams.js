@@ -25,6 +25,7 @@ export default class Teams extends React.Component {
   }
 
   render() {
+    document.title = "Teams";
     return (
       <div className="container mt-5 mb-3 app">
         <h1>

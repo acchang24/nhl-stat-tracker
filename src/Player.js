@@ -46,6 +46,7 @@ export default class Player extends React.Component {
   }
 
   render() {
+    document.title = this.state.player.fullName;
     let spacing = " | ";
     return (
       <div>

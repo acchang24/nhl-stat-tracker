@@ -35,6 +35,7 @@ export default class Home extends React.Component {
   }
 
   render() {
+    document.title = "Home";
     return (
       <div className="container mt-5">
         <div className="app">

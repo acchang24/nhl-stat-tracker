@@ -167,6 +167,7 @@ export default class VoteBracket extends React.Component {
     }
 
     render() {
+        document.title = "Vote Bracket";
         return  <div>
             <form onSubmit={this.handleSubmit}>
                 <div className="app">

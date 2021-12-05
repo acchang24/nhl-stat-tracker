@@ -63,6 +63,7 @@ export default class Team extends React.Component {
   }
 
   render() {
+    document.title = this.state.team.name;
     return (
       <div>
         <div className="mt-3">
