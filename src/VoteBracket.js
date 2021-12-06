@@ -1,4 +1,6 @@
 import React from "react"
+import { toast } from "react-toastify";
+import BracketTable from "./BracketTable";
 
 export default class VoteBracket extends React.Component {
     constructor(props) {
@@ -23,6 +25,7 @@ export default class VoteBracket extends React.Component {
             eConf2: "",
             fin1: "",
             fin2: "",
+            isValid: true,
         };
 
         this.handleCen1Change = this.handleCen1Change.bind(this);
@@ -45,117 +48,131 @@ export default class VoteBracket extends React.Component {
     }
 
     handleCen1Change(event) {
-        this.setState({cen1: event.target.value});
-        console.log("selected " + event.target.value)
+        this.setState({ cen1: event.target.value });
     }
 
     handleCen2Change(event) {
-        this.setState({cen2: event.target.value});
-        console.log("selected " +  event.target.value);
+        this.setState({ cen2: event.target.value });
     }
     handlePac1Change(event) {
-        this.setState({pac1: event.target.value});
-        console.log("selected " +  event.target.value);
+        this.setState({ pac1: event.target.value });
     }
     handlePac2Change(event) {
-        this.setState({pac2: event.target.value});
-        console.log("selected " +  event.target.value);
+        this.setState({ pac2: event.target.value });
     }
     handleWConf1Change(event) {
-        this.setState({wConf1 : event.target.value});
-        console.log("selected " +  event.target.value);
+        this.setState({ wConf1: event.target.value });
     }
     handleWConf2Change(event) {
-        this.setState({wConf2 : event.target.value});
-        console.log("selected " +  event.target.value);
+        this.setState({ wConf2: event.target.value });
     }
 
     handleMet1Change(event) {
-        this.setState({met1: event.target.value});
-        console.log("selected " + event.target.value)
+        this.setState({ met1: event.target.value });
     }
     handleMet2Change(event) {
-        this.setState({met2: event.target.value});
-        console.log("selected " +  event.target.value);
+        this.setState({ met2: event.target.value });
     }
     handleAtl1Change(event) {
-        this.setState({atl1: event.target.value});
-        console.log("selected " +  event.target.value);
+        this.setState({ atl1: event.target.value });
     }
     handleAtl2Change(event) {
-        this.setState({atl2: event.target.value});
-        console.log("selected " +  event.target.value);
+        this.setState({ atl2: event.target.value });
     }
     handleEConf1Change(event) {
-        this.setState({eConf1 : event.target.value});
-        console.log("selected " +  event.target.value);
+        this.setState({ eConf1: event.target.value });
     }
     handleEConf2Change(event) {
-        this.setState({eConf2 : event.target.value});
-        console.log("selected " +  event.target.value);
+        this.setState({ eConf2: event.target.value });
     }
 
     handleFinal1Change(event) {
-        this.setState({fin1 : event.target.value});
-        console.log("selected " + event.target.value);
+        this.setState({ fin1: event.target.value });
     }
     handleFinal2Change(event) {
-        this.setState({fin2 : event.target.value});
-        console.log("selected " + event.target.value);
+        this.setState({ fin2: event.target.value });
     }
     handleSubmit(event) {
-        
         event.preventDefault();
-        console.log("ASD")
-        console.log(this.state.cen1)
-        console.log(this.state.cen2)
-        console.log(this.state.pac1)
-        console.log(this.state.pac2)
-        console.log(this.state.wConf1)
-        console.log(this.state.wConf2)
-        console.log(this.state.met1)
-        console.log(this.state.met2)
-        console.log(this.state.atl1)
-        console.log(this.state.atl2)
-        console.log(this.state.eConf1)
-        console.log(this.state.eConf2)
-        console.log(this.state.fin1)
-        console.log(this.state.fin2)
+
+        let newBracket = [this.state.wList, [this.state.cen1, this.state.cen2, this.state.pac1, this.state.pac2], [this.state.wConf1, this.state.wConf2],
+        [this.state.fin1, this.state.fin2], [this.state.eConf1, this.state.eConf2], [this.state.met1, this.state.met2, this.state.atl1, this.state.atl2], this.state.eList];
+
+        let valid = true;
+        for (let i = 0; i < newBracket.length; i++) {
+            for (let j = 0; j < newBracket[i].length; j++) {
+                if (newBracket[i][j] === "") {
+                    valid = false;
+                }
+            }
+        }
+
+        if (valid) {
+            let currentDate = this.getDate();
+            let testName = "Alex Test"
+            console.log(newBracket)
+            fetch("http://localhost:3000/api/brackets", {
+                method: "POST",
+                body: JSON.stringify({
+                    name: testName,
+                    bracket: { "vote": newBracket },
+                    date: currentDate
+                }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            })
+                .then((response) => response.json())
+                .then((json) => {
+                    toast.success(`Post "${json.name}" was successfully created`);
+                });
+        }
+        else {
+            this.setState({ isValid: false });
+        }
     }
 
+    getDate() {
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        var yyyy = today.getFullYear();
 
+        today = mm + '-' + dd + '-' + yyyy;
+        return today;
+    }
 
     fetchWildCardStandings() {
         fetch("https://statsapi.web.nhl.com/api/v1/standings/wildCardWithLeaders")
-        .then((response) => {
-            return response.json();
-        }).then((standings) => {
+            .then((response) => {
+                return response.json();
+            }).then((standings) => {
 
-            let west = [];
-            let east = [];
-            let w = [];
-            let e = [];
+                let west = [];
+                let east = [];
+                let w = [];
+                let e = [];
 
-            this.createConference(standings, east, 2, 0);
-            this.setState({eastList: east});
+                this.createConference(standings, east, 2, 0);
+                this.setState({ eastList: east });
 
-            this.createConference(standings, west, 4, 1);
-            this.setState({westList: west});
+                this.createConference(standings, west, 4, 1);
+                this.setState({ westList: west });
 
-            for(let i = 0; i < 8; i++) {
-                w.push(west[i].team.name);
-                e.push(east[i].team.name);
-            }
-            this.setState({wList: w});
-            this.setState({eList: e});
-        })
+                for (let i = 0; i < 8; i++) {
+                    w.push(west[i].team.name);
+                    e.push(east[i].team.name);
+                }
+                this.setState({ wList: w });
+                this.setState({ eList: e });
+            })
     }
 
     createConference(standings, array, division, conference) {
-        for(let i = 0; i < 2; i++) {
-            for(let j = 0; j < 3; j++) {
+        for (let i = 0; i < 2; i++) {
+            for (let j = 0; j < 3; j++) {
                 array.push(standings.records[division + i].teamRecords[j])
-                if(j === 0) {
+                if (j === 0) {
                     array.push(standings.records[conference].teamRecords[i])
                 }
             }
@@ -168,7 +185,7 @@ export default class VoteBracket extends React.Component {
 
     render() {
         document.title = "Vote Bracket";
-        return  <div>
+        return <div>
             <form onSubmit={this.handleSubmit}>
                 <div className="app">
                     <h1 className="mt-3" title="Vote for Playoff Brackets Based off of Current Standings"><strong>Vote Bracket</strong></h1>
@@ -192,7 +209,7 @@ export default class VoteBracket extends React.Component {
                                 <select className="mb-3 card form-select"
                                     value={this.state.cen1}
                                     onChange={this.handleCen1Change}
-                                    >
+                                >
                                     <option>Select a Team</option>
                                     <option value={this.state.wList[0]}>{this.state.wList[0]}</option>
                                     <option value={this.state.wList[1]}>{this.state.wList[1]}</option>
@@ -201,7 +218,7 @@ export default class VoteBracket extends React.Component {
                                 <select className="mb-3 card form-select" id="size"
                                     value={this.state.cen2}
                                     onChange={this.handleCen2Change}
-                                    >
+                                >
                                     <option>Select a Team</option>
                                     <option value={this.state.wList[2]}>{this.state.wList[2]}</option>
                                     <option value={this.state.wList[3]}>{this.state.wList[3]}</option>
@@ -209,7 +226,7 @@ export default class VoteBracket extends React.Component {
                                 <select className="mb-3 card form-select" id="size"
                                     value={this.state.pac1}
                                     onChange={this.handlePac1Change}
-                                    >
+                                >
                                     <option>Select a Team</option>
                                     <option value={this.state.wList[4]}>{this.state.wList[4]}</option>
                                     <option value={this.state.wList[5]}>{this.state.wList[5]}</option>
@@ -217,7 +234,7 @@ export default class VoteBracket extends React.Component {
                                 <select className="mb-3 card form-select" id="size"
                                     value={this.state.pac2}
                                     onChange={this.handlePac2Change}
-                                    >
+                                >
                                     <option>Select a Team</option>
                                     <option value={this.state.wList[6]}>{this.state.wList[6]}</option>
                                     <option value={this.state.wList[7]}>{this.state.wList[7]}</option>
@@ -228,10 +245,10 @@ export default class VoteBracket extends React.Component {
                                 <select className="mb-3 card form-select" id="size"
                                     value={this.state.wConf1}
                                     onChange={this.handleWConf1Change}
-                                    >
+                                >
                                     <option>Select a Team</option>
                                     {this.state.westList.map((team, i) => {
-                                        if(i < 4) {
+                                        if (i < 4) {
                                             return <option value={team.team.name} key={i}>
                                                 {team.team.name}
                                             </option>
@@ -243,10 +260,10 @@ export default class VoteBracket extends React.Component {
                                 <select className="mb-3 card form-select" id="size"
                                     value={this.state.wConf2}
                                     onChange={this.handleWConf2Change}
-                                    >
+                                >
                                     <option>Select a Team</option>
                                     {this.state.westList.map((team, i) => {
-                                        if(i >= 4) {
+                                        if (i >= 4) {
                                             return <option value={team.team.name} key={i}>
                                                 {team.team.name}
                                             </option>
@@ -260,7 +277,7 @@ export default class VoteBracket extends React.Component {
                                 <select className="mb-3 card form-select" id="size"
                                     value={this.state.fin1}
                                     onChange={this.handleFinal1Change}
-                                    >
+                                >
                                     <option>Select a Team</option>
                                     {this.state.westList.map((team, i) => {
                                         return <option value={team.team.name} key={i}>
@@ -271,7 +288,7 @@ export default class VoteBracket extends React.Component {
                                 <select className="mb-3 card form-select" id="size"
                                     value={this.state.fin2}
                                     onChange={this.handleFinal2Change}
-                                    >
+                                >
                                     <option>Select a Team</option>
                                     {this.state.eastList.map((team, i) => {
                                         return <option value={team.team.name} key={i}>
@@ -281,15 +298,15 @@ export default class VoteBracket extends React.Component {
                                 </select>
                             </div>
 
-                            
+
                             <div className="col round form-group">
                                 <select className="mb-3 card form-select" id="size"
                                     value={this.state.eConf1}
                                     onChange={this.handleEConf1Change}
-                                    >
+                                >
                                     <option>Select a Team</option>
                                     {this.state.eastList.map((team, i) => {
-                                        if(i < 4) {
+                                        if (i < 4) {
                                             return <option value={team.team.name} key={i}>
                                                 {team.team.name}
                                             </option>
@@ -301,10 +318,10 @@ export default class VoteBracket extends React.Component {
                                 <select className="mb-3 card form-select" id="size"
                                     value={this.state.eConf2}
                                     onChange={this.handleEConf2Change}
-                                    >
+                                >
                                     <option>Select a Team</option>
                                     {this.state.eastList.map((team, i) => {
-                                        if(i >= 4) {
+                                        if (i >= 4) {
                                             return <option value={team.team.name} key={i}>
                                                 {team.team.name}
                                             </option>
@@ -318,7 +335,7 @@ export default class VoteBracket extends React.Component {
                                 <select className="mb-3 card form-select"
                                     value={this.state.met1}
                                     onChange={this.handleMet1Change}
-                                    >
+                                >
                                     <option>Select a Team</option>
                                     <option value={this.state.eList[0]}>{this.state.eList[0]}</option>
                                     <option value={this.state.eList[1]}>{this.state.eList[1]}</option>
@@ -327,7 +344,7 @@ export default class VoteBracket extends React.Component {
                                 <select className="mb-3 card form-select" id="size"
                                     value={this.state.met2}
                                     onChange={this.handleMet2Change}
-                                    >
+                                >
                                     <option>Select a Team</option>
                                     <option value={this.state.eList[2]}>{this.state.eList[2]}</option>
                                     <option value={this.state.eList[3]}>{this.state.eList[3]}</option>
@@ -335,7 +352,7 @@ export default class VoteBracket extends React.Component {
                                 <select className="mb-3 card form-select" id="size"
                                     value={this.state.atl1}
                                     onChange={this.handleAtl1Change}
-                                    >
+                                >
                                     <option>Select a Team</option>
                                     <option value={this.state.eList[4]}>{this.state.eList[4]}</option>
                                     <option value={this.state.eList[5]}>{this.state.eList[5]}</option>
@@ -343,7 +360,7 @@ export default class VoteBracket extends React.Component {
                                 <select className="mb-3 card form-select" id="size"
                                     value={this.state.atl2}
                                     onChange={this.handleAtl2Change}
-                                    >
+                                >
                                     <option>Select a Team</option>
                                     <option value={this.state.eList[6]}>{this.state.eList[6]}</option>
                                     <option value={this.state.eList[7]}>{this.state.eList[7]}</option>
@@ -365,12 +382,14 @@ export default class VoteBracket extends React.Component {
                             </div>
                         </div>
                         <button type="submit" className="btn btn-primary">Submit Bracket</button>
+                        {this.state.isValid ? <></> : <div className="error">Missing Selections</div>}
                     </div>
                 </div>
             </form>
             <div className="mt-5 app">
                 <div>
                     <h3><strong>Submitted Brackets</strong></h3>
+                    <BracketTable />
                 </div>
             </div>
         </div>

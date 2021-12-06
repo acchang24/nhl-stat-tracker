@@ -7,6 +7,7 @@ import Teams from "./Teams";
 import Team from "./Team";
 import Player from "./Player";
 import VoteBracket from "./VoteBracket";
+import Bracket from "./Bracket";
 
 import "bootstrap/dist/css/bootstrap.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -19,6 +20,7 @@ export default class App extends React.Component {
         <Navigation />
         <div className="container">
           <Switch>
+            <Route path="/vote/:id" component={Bracket} />
             <Route path="/vote" component={VoteBracket} />
             <Route path="/teams/:id/:player" component={Player} />
             <Route path="/teams/:id" component={Team} />
@@ -31,3 +33,4 @@ export default class App extends React.Component {
     );
   }
 }
+
