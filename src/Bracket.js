@@ -16,7 +16,7 @@ export default function Bracket(props) {
     const { user } = useAuth0();
 
     useEffect(() => {
-        fetch(`http://localhost:3000/api/brackets/${props.match.params.id}`)
+        fetch(`https://acchang24-nhl-brackets-api.herokuapp.com/api/brackets/${props.match.params.id}`)
             .then((response) => {
                 return response.json();
             }).then((info) => {

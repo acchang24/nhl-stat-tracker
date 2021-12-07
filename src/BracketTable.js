@@ -11,7 +11,7 @@ export default class BracketTable extends React.Component {
     }
 
     fetchBrackets() {
-        fetch("http://localhost:3000/api/brackets")
+        fetch("https://acchang24-nhl-brackets-api.herokuapp.com/api/brackets")
             .then((response) => {
                 return response.json();
             }).then((brackets) => {

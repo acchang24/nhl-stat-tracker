@@ -111,7 +111,7 @@ export default function VoteBracket() {
 
         if (valid) {
             let currentDate = getDate();
-            fetch("http://localhost:3000/api/brackets", {
+            fetch("https://acchang24-nhl-brackets-api.herokuapp.com/api/brackets", {
                 method: "POST",
                 body: JSON.stringify({
                     name: user.name,

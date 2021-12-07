@@ -13,7 +13,7 @@ class Modal extends React.Component {
     }
 
     deleteBracket() {
-        fetch(`http://localhost:3000/api/brackets/${this.props.id}`, {
+        fetch(`https://acchang24-nhl-brackets-api.herokuapp.com/api/brackets/${this.props.id}`, {
             method: "DELETE"
         }).then((json) => {
             toast.success(`Your Bracket was deleted`);
