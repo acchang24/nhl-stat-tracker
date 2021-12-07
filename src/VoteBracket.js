@@ -1,102 +1,104 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { toast } from "react-toastify";
 import BracketTable from "./BracketTable";
+import { useAuth0 } from "@auth0/auth0-react";
 
-export default class VoteBracket extends React.Component {
-    constructor(props) {
-        super(props);
+export default function VoteBracket() {
+    const [westList, setWestList] = useState([]);
+    const [eastList, setEastList] = useState([]);
+    const [wList, setWList] = useState([]);
+    const [eList, setEList] = useState([]);
+    const [cen1, setCen1] = useState("");
+    const [cen2, setCen2] = useState("");
+    const [pac1, setPac1] = useState("");
+    const [pac2, setPac2] = useState("");
+    const [wConf1, setWConf1] = useState("");
+    const [wConf2, setWConf2] = useState("");
+    const [met1, setMet1] = useState("");
+    const [met2, setMet2] = useState("");
+    const [atl1, setAtl1] = useState("");
+    const [atl2, setAtl2] = useState("");
+    const [eConf1, setEConf1] = useState("");
+    const [eConf2, setEConf2] = useState("");
+    const [fin1, setFin1] = useState("");
+    const [fin2, setFin2] = useState("");
+    const [isValid, setIsValid] = useState(true);
 
-        this.state = {
-            westList: [],
-            eastList: [],
-            wList: [],
-            eList: [],
-            cen1: "",
-            cen2: "",
-            pac1: "",
-            pac2: "",
-            wConf1: "",
-            wConf2: "",
-            met1: "",
-            met2: "",
-            atl1: "",
-            atl2: "",
-            eConf1: "",
-            eConf2: "",
-            fin1: "",
-            fin2: "",
-            isValid: true,
-        };
+    const { user } = useAuth0();
 
-        this.handleCen1Change = this.handleCen1Change.bind(this);
-        this.handleCen2Change = this.handleCen2Change.bind(this);
-        this.handlePac1Change = this.handlePac1Change.bind(this);
-        this.handlePac2Change = this.handlePac2Change.bind(this);
-        this.handleWConf1Change = this.handleWConf1Change.bind(this);
-        this.handleWConf2Change = this.handleWConf2Change.bind(this);
+    useEffect(() => {
+        fetch("https://statsapi.web.nhl.com/api/v1/standings/wildCardWithLeaders")
+            .then((response) => {
+                return response.json();
+            }).then((standings) => {
 
-        this.handleMet1Change = this.handleMet1Change.bind(this);
-        this.handleMet2Change = this.handleMet2Change.bind(this);
-        this.handleAtl1Change = this.handleAtl1Change.bind(this);
-        this.handleAtl2Change = this.handleAtl2Change.bind(this);
-        this.handleEConf1Change = this.handleEConf1Change.bind(this);
-        this.handleEConf2Change = this.handleEConf2Change.bind(this);
-        this.handleFinal1Change = this.handleFinal1Change.bind(this);
-        this.handleFinal2Change = this.handleFinal2Change.bind(this);
+                let west = [];
+                let east = [];
+                let w = [];
+                let e = [];
 
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
+                createConference(standings, east, 2, 0);
+                setEastList(east);
 
-    handleCen1Change(event) {
-        this.setState({ cen1: event.target.value });
-    }
+                createConference(standings, west, 4, 1);
+                setWestList(west)
 
-    handleCen2Change(event) {
-        this.setState({ cen2: event.target.value });
-    }
-    handlePac1Change(event) {
-        this.setState({ pac1: event.target.value });
-    }
-    handlePac2Change(event) {
-        this.setState({ pac2: event.target.value });
-    }
-    handleWConf1Change(event) {
-        this.setState({ wConf1: event.target.value });
-    }
-    handleWConf2Change(event) {
-        this.setState({ wConf2: event.target.value });
-    }
+                for (let i = 0; i < 8; i++) {
+                    w.push(west[i].team.name);
+                    e.push(east[i].team.name);
+                }
+                setWList(w);
+                setEList(e)
+            })
+        document.title = "Vote Bracket"
+    }, []);
 
-    handleMet1Change(event) {
-        this.setState({ met1: event.target.value });
+    function handleCen1Change(event) {
+        setCen1(event.target.value);
     }
-    handleMet2Change(event) {
-        this.setState({ met2: event.target.value });
+    function handleCen2Change(event) {
+        setCen2(event.target.value);
     }
-    handleAtl1Change(event) {
-        this.setState({ atl1: event.target.value });
+    function handlePac1Change(event) {
+        setPac1(event.target.value);
     }
-    handleAtl2Change(event) {
-        this.setState({ atl2: event.target.value });
+    function handlePac2Change(event) {
+        setPac2(event.target.value);
     }
-    handleEConf1Change(event) {
-        this.setState({ eConf1: event.target.value });
+    function handleMet1Change(event) {
+        setMet1(event.target.value);
     }
-    handleEConf2Change(event) {
-        this.setState({ eConf2: event.target.value });
+    function handleMet2Change(event) {
+        setMet2(event.target.value);
     }
-
-    handleFinal1Change(event) {
-        this.setState({ fin1: event.target.value });
+    function handleAtl1Change(event) {
+        setAtl1(event.target.value);
     }
-    handleFinal2Change(event) {
-        this.setState({ fin2: event.target.value });
+    function handleAtl2Change(event) {
+        setAtl2(event.target.value);
     }
-    handleSubmit(event) {
+    function handleWConf1Change(event) {
+        setWConf1(event.target.value);
+    }
+    function handleWConf2Change(event) {
+        setWConf2(event.target.value);
+    }
+    function handleFinal1Change(event) {
+        setFin1(event.target.value);
+    }
+    function handleFinal2Change(event) {
+        setFin2(event.target.value);
+    }
+    function handleEConf1Change(event) {
+        setEConf1(event.target.value);
+    }
+    function handleEConf2Change(event) {
+        setEConf2(event.target.value);
+    }
+    function handleSubmit(event) {
         event.preventDefault();
-
-        let newBracket = [this.state.wList, [this.state.cen1, this.state.cen2, this.state.pac1, this.state.pac2], [this.state.wConf1, this.state.wConf2],
-        [this.state.fin1, this.state.fin2], [this.state.eConf1, this.state.eConf2], [this.state.met1, this.state.met2, this.state.atl1, this.state.atl2], this.state.eList];
+        let newBracket = [wList, [cen1, cen2, pac1, pac2], [wConf1, wConf2],
+            [fin1, fin2], [eConf1, eConf2], [met1, met2, atl1, atl2], eList];
 
         let valid = true;
         for (let i = 0; i < newBracket.length; i++) {
@@ -108,13 +110,12 @@ export default class VoteBracket extends React.Component {
         }
 
         if (valid) {
-            let currentDate = this.getDate();
-            let testName = "Alex Test"
-            console.log(newBracket)
+            let currentDate = getDate();
             fetch("http://localhost:3000/api/brackets", {
                 method: "POST",
                 body: JSON.stringify({
-                    name: testName,
+                    name: user.name,
+                    userid: user.sub,
                     bracket: { "vote": newBracket },
                     date: currentDate
                 }),
@@ -128,270 +129,237 @@ export default class VoteBracket extends React.Component {
                 });
         }
         else {
-            this.setState({ isValid: false });
+            setIsValid(false);
         }
     }
 
-    getDate() {
-        var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0');
-        var yyyy = today.getFullYear();
-
-        today = mm + '-' + dd + '-' + yyyy;
-        return today;
-    }
-
-    fetchWildCardStandings() {
-        fetch("https://statsapi.web.nhl.com/api/v1/standings/wildCardWithLeaders")
-            .then((response) => {
-                return response.json();
-            }).then((standings) => {
-
-                let west = [];
-                let east = [];
-                let w = [];
-                let e = [];
-
-                this.createConference(standings, east, 2, 0);
-                this.setState({ eastList: east });
-
-                this.createConference(standings, west, 4, 1);
-                this.setState({ westList: west });
-
-                for (let i = 0; i < 8; i++) {
-                    w.push(west[i].team.name);
-                    e.push(east[i].team.name);
-                }
-                this.setState({ wList: w });
-                this.setState({ eList: e });
-            })
-    }
-
-    createConference(standings, array, division, conference) {
-        for (let i = 0; i < 2; i++) {
-            for (let j = 0; j < 3; j++) {
-                array.push(standings.records[division + i].teamRecords[j])
-                if (j === 0) {
-                    array.push(standings.records[conference].teamRecords[i])
-                }
-            }
-        }
-    }
-
-    componentDidMount() {
-        this.fetchWildCardStandings();
-    }
-
-    render() {
-        document.title = "Vote Bracket";
-        return <div>
-            <form onSubmit={this.handleSubmit}>
-                <div className="app">
-                    <h1 className="mt-3" title="Vote for Playoff Brackets Based off of Current Standings"><strong>Vote Bracket</strong></h1>
-                    <div className="container mt-3">
-                        <div className="mt-5 row">
-                            <div className="col round">
-                                {this.state.westList.map((team, i) => {
-                                    return <div key={team.team.id}>
-                                        <div className="card mb-3">
-                                            <div>
-                                                <div className="mt-2">{team.team.name}</div>
-                                                <img className="mb-2" src={`./images/${team.team.id}.png`} alt="logo" height="100" width="100"></img>
-                                            </div>
+    return <div>
+        {user !== undefined ? <form onSubmit={handleSubmit}>
+            <div className="app">
+                <h1 className="mt-3" title="Vote for Playoff Brackets Based off of Current Standings"><strong>Vote Bracket</strong></h1>
+                <div className="container mt-3">
+                    <div className="mt-5 row">
+                        <div className="col round">
+                            {westList.map((team, i) => {
+                                return <div key={team.team.id}>
+                                    <div className="card mb-3">
+                                        <div>
+                                            <div className="mt-2">{team.team.name}</div>
+                                            <img className="mb-2" src={`./images/${team.team.id}.png`} alt="logo" height="100" width="100"></img>
                                         </div>
-                                        {i % 2 === 1 ? <br></br> : <div></div>}
                                     </div>
-                                })}
-                            </div>
-
-                            <div className="col round form-group">
-                                <select className="mb-3 card form-select"
-                                    value={this.state.cen1}
-                                    onChange={this.handleCen1Change}
-                                >
-                                    <option>Select a Team</option>
-                                    <option value={this.state.wList[0]}>{this.state.wList[0]}</option>
-                                    <option value={this.state.wList[1]}>{this.state.wList[1]}</option>
-                                </select>
-
-                                <select className="mb-3 card form-select" id="size"
-                                    value={this.state.cen2}
-                                    onChange={this.handleCen2Change}
-                                >
-                                    <option>Select a Team</option>
-                                    <option value={this.state.wList[2]}>{this.state.wList[2]}</option>
-                                    <option value={this.state.wList[3]}>{this.state.wList[3]}</option>
-                                </select>
-                                <select className="mb-3 card form-select" id="size"
-                                    value={this.state.pac1}
-                                    onChange={this.handlePac1Change}
-                                >
-                                    <option>Select a Team</option>
-                                    <option value={this.state.wList[4]}>{this.state.wList[4]}</option>
-                                    <option value={this.state.wList[5]}>{this.state.wList[5]}</option>
-                                </select>
-                                <select className="mb-3 card form-select" id="size"
-                                    value={this.state.pac2}
-                                    onChange={this.handlePac2Change}
-                                >
-                                    <option>Select a Team</option>
-                                    <option value={this.state.wList[6]}>{this.state.wList[6]}</option>
-                                    <option value={this.state.wList[7]}>{this.state.wList[7]}</option>
-                                </select>
-                            </div>
-
-                            <div className="col round form-group">
-                                <select className="mb-3 card form-select" id="size"
-                                    value={this.state.wConf1}
-                                    onChange={this.handleWConf1Change}
-                                >
-                                    <option>Select a Team</option>
-                                    {this.state.westList.map((team, i) => {
-                                        if (i < 4) {
-                                            return <option value={team.team.name} key={i}>
-                                                {team.team.name}
-                                            </option>
-                                        }
-                                        return ""
-                                    })}
-                                </select>
-
-                                <select className="mb-3 card form-select" id="size"
-                                    value={this.state.wConf2}
-                                    onChange={this.handleWConf2Change}
-                                >
-                                    <option>Select a Team</option>
-                                    {this.state.westList.map((team, i) => {
-                                        if (i >= 4) {
-                                            return <option value={team.team.name} key={i}>
-                                                {team.team.name}
-                                            </option>
-                                        }
-                                        return ""
-                                    })}
-                                </select>
-                            </div>
-
-                            <div className="col my-auto form-group">
-                                <select className="mb-3 card form-select" id="size"
-                                    value={this.state.fin1}
-                                    onChange={this.handleFinal1Change}
-                                >
-                                    <option>Select a Team</option>
-                                    {this.state.westList.map((team, i) => {
-                                        return <option value={team.team.name} key={i}>
-                                            {team.team.name}
-                                        </option>
-                                    })}
-                                </select>
-                                <select className="mb-3 card form-select" id="size"
-                                    value={this.state.fin2}
-                                    onChange={this.handleFinal2Change}
-                                >
-                                    <option>Select a Team</option>
-                                    {this.state.eastList.map((team, i) => {
-                                        return <option value={team.team.name} key={i}>
-                                            {team.team.name}
-                                        </option>
-                                    })}
-                                </select>
-                            </div>
-
-
-                            <div className="col round form-group">
-                                <select className="mb-3 card form-select" id="size"
-                                    value={this.state.eConf1}
-                                    onChange={this.handleEConf1Change}
-                                >
-                                    <option>Select a Team</option>
-                                    {this.state.eastList.map((team, i) => {
-                                        if (i < 4) {
-                                            return <option value={team.team.name} key={i}>
-                                                {team.team.name}
-                                            </option>
-                                        }
-                                        return ""
-                                    })}
-                                </select>
-
-                                <select className="mb-3 card form-select" id="size"
-                                    value={this.state.eConf2}
-                                    onChange={this.handleEConf2Change}
-                                >
-                                    <option>Select a Team</option>
-                                    {this.state.eastList.map((team, i) => {
-                                        if (i >= 4) {
-                                            return <option value={team.team.name} key={i}>
-                                                {team.team.name}
-                                            </option>
-                                        }
-                                        return ""
-                                    })}
-                                </select>
-                            </div>
-
-                            <div className="col round form-group">
-                                <select className="mb-3 card form-select"
-                                    value={this.state.met1}
-                                    onChange={this.handleMet1Change}
-                                >
-                                    <option>Select a Team</option>
-                                    <option value={this.state.eList[0]}>{this.state.eList[0]}</option>
-                                    <option value={this.state.eList[1]}>{this.state.eList[1]}</option>
-                                </select>
-
-                                <select className="mb-3 card form-select" id="size"
-                                    value={this.state.met2}
-                                    onChange={this.handleMet2Change}
-                                >
-                                    <option>Select a Team</option>
-                                    <option value={this.state.eList[2]}>{this.state.eList[2]}</option>
-                                    <option value={this.state.eList[3]}>{this.state.eList[3]}</option>
-                                </select>
-                                <select className="mb-3 card form-select" id="size"
-                                    value={this.state.atl1}
-                                    onChange={this.handleAtl1Change}
-                                >
-                                    <option>Select a Team</option>
-                                    <option value={this.state.eList[4]}>{this.state.eList[4]}</option>
-                                    <option value={this.state.eList[5]}>{this.state.eList[5]}</option>
-                                </select>
-                                <select className="mb-3 card form-select" id="size"
-                                    value={this.state.atl2}
-                                    onChange={this.handleAtl2Change}
-                                >
-                                    <option>Select a Team</option>
-                                    <option value={this.state.eList[6]}>{this.state.eList[6]}</option>
-                                    <option value={this.state.eList[7]}>{this.state.eList[7]}</option>
-                                </select>
-                            </div>
-
-                            <div className="col round">
-                                {this.state.eastList.map((team, i) => {
-                                    return <div key={team.team.id}>
-                                        <div className="card mb-3">
-                                            <div>
-                                                <div className="mt-2">{team.team.name}</div>
-                                                <img className="mb-2" src={`./images/${team.team.id}.png`} alt="logo" height="100" width="100"></img>
-                                            </div>
-                                        </div>
-                                        {i % 2 === 1 ? <br></br> : <div></div>}
-                                    </div>
-                                })}
-                            </div>
+                                    {i % 2 === 1 ? <br></br> : <div></div>}
+                                </div>
+                            })}
                         </div>
-                        <button type="submit" className="btn btn-primary">Submit Bracket</button>
-                        {this.state.isValid ? <></> : <div className="error">Missing Selections</div>}
+
+                        <div className="col round form-group">
+                            <select className="mb-3 card form-select"
+                                value={cen1}
+                                onChange={handleCen1Change}
+                            >
+                                <option>Select a Team</option>
+                                <option value={wList[0]}>{wList[0]}</option>
+                                <option value={wList[1]}>{wList[1]}</option>
+                            </select>
+
+                            <select className="mb-3 card form-select" id="size"
+                                value={cen2}
+                                onChange={handleCen2Change}
+                            >
+                                <option>Select a Team</option>
+                                <option value={wList[2]}>{wList[2]}</option>
+                                <option value={wList[3]}>{wList[3]}</option>
+                            </select>
+                            <select className="mb-3 card form-select" id="size"
+                                value={pac1}
+                                onChange={handlePac1Change}
+                            >
+                                <option>Select a Team</option>
+                                <option value={wList[4]}>{wList[4]}</option>
+                                <option value={wList[5]}>{wList[5]}</option>
+                            </select>
+                            <select className="mb-3 card form-select" id="size"
+                                value={pac2}
+                                onChange={handlePac2Change}
+                            >
+                                <option>Select a Team</option>
+                                <option value={wList[6]}>{wList[6]}</option>
+                                <option value={wList[7]}>{wList[7]}</option>
+                            </select>
+                        </div>
+
+                        <div className="col round form-group">
+                            <select className="mb-3 card form-select" id="size"
+                                value={wConf1}
+                                onChange={handleWConf1Change}
+                            >
+                                <option>Select a Team</option>
+                                {westList.map((team, i) => {
+                                    if (i < 4) {
+                                        return <option value={team.team.name} key={i}>
+                                            {team.team.name}
+                                        </option>
+                                    }
+                                    return ""
+                                })}
+                            </select>
+
+                            <select className="mb-3 card form-select" id="size"
+                                value={wConf2}
+                                onChange={handleWConf2Change}
+                            >
+                                <option>Select a Team</option>
+                                {westList.map((team, i) => {
+                                    if (i >= 4) {
+                                        return <option value={team.team.name} key={i}>
+                                            {team.team.name}
+                                        </option>
+                                    }
+                                    return ""
+                                })}
+                            </select>
+                        </div>
+
+                        <div className="col my-auto form-group">
+                            <select className="mb-3 card form-select" id="size"
+                                value={fin1}
+                                onChange={handleFinal1Change}
+                            >
+                                <option>Select a Team</option>
+                                {westList.map((team, i) => {
+                                    return <option value={team.team.name} key={i}>
+                                        {team.team.name}
+                                    </option>
+                                })}
+                            </select>
+                            <select className="mb-3 card form-select" id="size"
+                                value={fin2}
+                                onChange={handleFinal2Change}
+                            >
+                                <option>Select a Team</option>
+                                {eastList.map((team, i) => {
+                                    return <option value={team.team.name} key={i}>
+                                        {team.team.name}
+                                    </option>
+                                })}
+                            </select>
+                        </div>
+
+                        <div className="col round form-group">
+                            <select className="mb-3 card form-select" id="size"
+                                value={eConf1}
+                                onChange={handleEConf1Change}
+                            >
+                                <option>Select a Team</option>
+                                {eastList.map((team, i) => {
+                                    if (i < 4) {
+                                        return <option value={team.team.name} key={i}>
+                                            {team.team.name}
+                                        </option>
+                                    }
+                                    return ""
+                                })}
+                            </select>
+
+                            <select className="mb-3 card form-select" id="size"
+                                value={eConf2}
+                                onChange={handleEConf2Change}
+                            >
+                                <option>Select a Team</option>
+                                {eastList.map((team, i) => {
+                                    if (i >= 4) {
+                                        return <option value={team.team.name} key={i}>
+                                            {team.team.name}
+                                        </option>
+                                    }
+                                    return ""
+                                })}
+                            </select>
+                        </div>
+
+                        <div className="col round form-group">
+                            <select className="mb-3 card form-select"
+                                value={met1}
+                                onChange={handleMet1Change}
+                            >
+                                <option>Select a Team</option>
+                                <option value={eList[0]}>{eList[0]}</option>
+                                <option value={eList[1]}>{eList[1]}</option>
+                            </select>
+
+                            <select className="mb-3 card form-select" id="size"
+                                value={met2}
+                                onChange={handleMet2Change}
+                            >
+                                <option>Select a Team</option>
+                                <option value={eList[2]}>{eList[2]}</option>
+                                <option value={eList[3]}>{eList[3]}</option>
+                            </select>
+                            <select className="mb-3 card form-select" id="size"
+                                value={atl1}
+                                onChange={handleAtl1Change}
+                            >
+                                <option>Select a Team</option>
+                                <option value={eList[4]}>{eList[4]}</option>
+                                <option value={eList[5]}>{eList[5]}</option>
+                            </select>
+                            <select className="mb-3 card form-select" id="size"
+                                value={atl2}
+                                onChange={handleAtl2Change}
+                            >
+                                <option>Select a Team</option>
+                                <option value={eList[6]}>{eList[6]}</option>
+                                <option value={eList[7]}>{eList[7]}</option>
+                            </select>
+                        </div>
+
+                        <div className="col round">
+                            {eastList.map((team, i) => {
+                                return <div key={team.team.id}>
+                                    <div className="card mb-3">
+                                        <div>
+                                            <div className="mt-2">{team.team.name}</div>
+                                            <img className="mb-2" src={`./images/${team.team.id}.png`} alt="logo" height="100" width="100"></img>
+                                        </div>
+                                    </div>
+                                    {i % 2 === 1 ? <br></br> : <div></div>}
+                                </div>
+                            })}
+                        </div>
                     </div>
-                </div>
-            </form>
-            <div className="mt-5 app">
-                <div>
-                    <h3><strong>Submitted Brackets</strong></h3>
-                    <BracketTable />
+                    <button type="submit" className="btn btn-primary">Submit Bracket</button>
+                    {isValid ? <></> : <div className="error">Missing Selections</div>}
                 </div>
             </div>
+        </form> : <h1 className="mt-3 app">Please login to vote</h1>}
+        <div className="mt-5 app">
+            <div>
+                <h3><strong>Submitted Brackets</strong></h3>
+                <BracketTable />
+            </div>
         </div>
+    </div>
+
+}
+function getDate() {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
+    var yyyy = today.getFullYear();
+
+    today = mm + '-' + dd + '-' + yyyy;
+    return today;
+}
+
+
+function createConference(standings, array, division, conference) {
+    for (let i = 0; i < 2; i++) {
+        for (let j = 0; j < 3; j++) {
+            array.push(standings.records[division + i].teamRecords[j])
+            if (j === 0) {
+                array.push(standings.records[conference].teamRecords[i])
+            }
+        }
     }
 }
