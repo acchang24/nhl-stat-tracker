@@ -25,7 +25,7 @@ export default function Bracket(props) {
                 setBracket(info.bracket.vote);
                 setIsLoading(false);
             })
-    }, []);
+    }, [props.match.params.id]);
 
     return <div>
         <div className="mt-3">

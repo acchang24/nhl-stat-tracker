@@ -1,4 +1,5 @@
 import React from "react";
+import LiveGameStatus from "./LiveGameStatus";
 import { Link } from "react-router-dom";
 import Loader from "./Loader";
 
@@ -75,7 +76,13 @@ export default class Home extends React.Component {
                         <div className="col my-auto">
                           <div><h1><strong>@</strong></h1></div>
                           <div>
-                            <strong>{game.status.abstractGameState}</strong>
+                            {game.status.abstractGameState === "Live" ?
+                              <div>
+                                <strong>{game.status.abstractGameState}</strong>
+                                <LiveGameStatus link={game.link}/>
+                              </div>
+                              :
+                              <strong>{game.status.abstractGameState}</strong>}
                           </div>
                         </div>
 
