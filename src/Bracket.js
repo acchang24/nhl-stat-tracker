@@ -10,7 +10,7 @@ export default function Bracket(props) {
 
     const [info, setInfo] = useState({});
     const [bracket, setBracket] = useState([]);
-    const [isLoading, setIsLoading] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const { user } = useAuth0();
@@ -28,7 +28,7 @@ export default function Bracket(props) {
     }, [props.match.params.id]);
 
     return <div>
-        <div className="mt-3">
+        {isLoading ? <Loader /> : <div className="mt-3">
             <Link className="button" to={"/vote"}>
                 Back to Vote
             </Link>
@@ -139,6 +139,7 @@ export default function Bracket(props) {
                     />
                 )}
             </div>}
-        </div>
+        </div>}
+
     </div>
 }

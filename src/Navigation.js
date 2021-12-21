@@ -4,17 +4,20 @@ import LogoutButton from "./LogoutButton";
 import { useAuth0 } from "@auth0/auth0-react";
 import SignupButton from "./SignupButton";
 import { NavLink } from "react-router-dom";
-
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 
 export default function Navigation() {
   const { isAuthenticated, isLoading } = useAuth0();
   const { user } = useAuth0();
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <div className="container-fluid">
-        <div className="collapse navbar-collapse">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+    <Navbar bg="light" variant="light" expand="lg">
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="me-auto">
+          <ul className="navbar-nav mr-auto">
             <li className="nav-item">
               <NavLink exact className="nav-link" to="/">
                 Home
@@ -31,24 +34,28 @@ export default function Navigation() {
               </NavLink>
             </li>
           </ul>
+        </Nav>
+        <Nav>
           {!isLoading && (
-            <div className="d-flex">
-              {isAuthenticated ? (
-                <div>
-                  <span>{user.name}</span>
-                  <LogoutButton />
-                </div>
-
-              ) : (
+            <ul className="navbar-nav mr-auto">
+              {isAuthenticated ?
+                <li className="nav-item">
+                  <NavDropdown align="end" title={user.name} id="basic-nav-dropdown">
+                    <NavDropdown.Item href="#action/3.1">User Info</NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.2">Settings</NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item><LogoutButton /></NavDropdown.Item>
+                  </NavDropdown>
+                </li>
+                :
                 <>
-                  <LoginButton />
-                  <SignupButton />
-                </>
-              )}
-            </div>
+                  <li className="nav-item"><LoginButton /></li>
+                  <li className="nav-item"><SignupButton /></li>
+                </>}
+            </ul>
           )}
-        </div>
-      </div>
-    </nav>
+        </Nav>
+      </Navbar.Collapse>
+    </Navbar>
   )
 }

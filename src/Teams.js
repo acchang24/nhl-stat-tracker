@@ -37,18 +37,18 @@ export default class Teams extends React.Component {
           <div className="row">
             {this.state.teamStandings.map((divisions, i) => {
               return (
-                <div key={i} className="col-12 col-md-6 col-lg-6 card">
+                <div key={i} className="col-12 col-md-6 col-lg-6 mt-3">
                   <h4 className="mt-3">{divisions.division.name} Division</h4>
-                  <table className="table table-hover">
+                  <table className="table table-hover table-bordered">
                     <thead>
                       <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Team</th>
-                        <th scope="col">GP</th>
-                        <th scope="col">W</th>
-                        <th scope="col">L</th>
-                        <th scope="col">OT</th>
-                        <th scope="col">PTS</th>
+                        <th scope="col" title="Standing">#</th>
+                        <th scope="col" title="Team Name" colSpan={2}>Team</th>
+                        <th scope="col" title="Games Played">GP</th>
+                        <th scope="col" title="Wins">W</th>
+                        <th scope="col" title="Losses">L</th>
+                        <th scope="col" title="Overtime Losses">OT</th>
+                        <th scope="col" title="Points">PTS</th>
                       </tr>
                     </thead>
                     {divisions.teamRecords.map((teams, j) => {
@@ -56,6 +56,11 @@ export default class Teams extends React.Component {
                         <tbody key={j}>
                           <tr>
                             <td>{teams.divisionRank}</td>
+                            <td>
+                              <Link to={`/teams/${teams.team.id}`}>
+                                <img src={`./images/${teams.team.id}.png`} height="25" width="25" alt="logo"></img>
+                              </Link>
+                            </td>
                             <td>
                               <Link to={`/teams/${teams.team.id}`}>
                                 {teams.team.name}

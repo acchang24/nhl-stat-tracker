@@ -28,10 +28,6 @@ code {
   justify-content: space-evenly;
 }
 
-a.active {
-  background-color: #eee;
-}
-
 .scroll-table {
   overflow-x: auto;
 }
