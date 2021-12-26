@@ -13,7 +13,7 @@ export default function Navigation() {
   const { user } = useAuth0();
 
   return (
-    <Navbar bg="light" variant="light" expand="lg">
+    <Navbar className="color-nav" variant="dark" expand="lg">
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="me-auto">
@@ -41,8 +41,8 @@ export default function Navigation() {
               {isAuthenticated ?
                 <li className="nav-item">
                   <NavDropdown align="end" title={user.name} id="basic-nav-dropdown">
-                    <NavDropdown.Item href="#action/3.1">User Info</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.2">Settings</NavDropdown.Item>
+                    <NavDropdown.Item>User Profile</NavDropdown.Item>
+                    <NavDropdown.Item>Settings</NavDropdown.Item>
                     <NavDropdown.Divider />
                     <NavDropdown.Item><LogoutButton /></NavDropdown.Item>
                   </NavDropdown>

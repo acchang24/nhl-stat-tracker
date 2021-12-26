@@ -99,7 +99,7 @@ export default class Home extends React.Component {
                 })}
               </div>
             ) : (
-              <div className="mt-3 card">No Games Today</div>
+              <div className="mt-3 app">No Games Today</div>
             )}
         </div>
       </div>

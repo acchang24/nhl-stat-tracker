@@ -37,7 +37,7 @@ export default class Teams extends React.Component {
           <div className="row">
             {this.state.teamStandings.map((divisions, i) => {
               return (
-                <div key={i} className="col-12 col-md-6 col-lg-6 mt-3">
+                <div key={i} className="col-12 col-lg-6 mt-3">
                   <h4 className="mt-3">{divisions.division.name} Division</h4>
                   <table className="table table-hover table-bordered">
                     <thead>

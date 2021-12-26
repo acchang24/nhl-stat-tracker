@@ -336,7 +336,7 @@ export default function VoteBracket() {
         <div className="mt-5 app">
             <div>
                 <h3><strong>Submitted Brackets</strong></h3>
-                <BracketTable />
+                {/* <BracketTable /> */}
             </div>
         </div>
     </div>
