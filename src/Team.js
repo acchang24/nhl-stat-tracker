@@ -92,7 +92,7 @@ export default class Team extends React.Component {
 
           <div className="scroll-table mt-5">
             <table className="table table-bordered table-hover">
-              <thead>
+              <thead className="thead-dark">
                 <tr>
                   <th title="Games Played" scope="col">GP</th>
                   <th title="Wins" scope="col">W</th>

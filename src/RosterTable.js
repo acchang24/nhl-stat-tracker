@@ -107,7 +107,7 @@ export default function RosterTable(props) {
     }
 
     return (<table className="table table-bordered table-hover sortable">
-        <thead>
+        <thead className="thead-dark">
             <tr>
                 <th
                     onClick={() => {

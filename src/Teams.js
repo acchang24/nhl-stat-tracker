@@ -40,7 +40,7 @@ export default class Teams extends React.Component {
                 <div key={i} className="col-12 col-lg-6 mt-3">
                   <h4 className="mt-3">{divisions.division.name} Division</h4>
                   <table className="table table-hover table-bordered">
-                    <thead>
+                    <thead className="thead-dark">
                       <tr>
                         <th scope="col" title="Standing">#</th>
                         <th scope="col" title="Team Name" colSpan={2}>Team</th>

@@ -17,11 +17,11 @@ export default class Home extends React.Component {
 
   getDate() {
     var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0');
+    var dd = String(today.getDate()).padStart(2, "0");
+    var mm = String(today.getMonth() + 1).padStart(2, "0");
     var yyyy = today.getFullYear();
 
-    today = mm + '-' + dd + '-' + yyyy;
+    today = mm + "-" + dd + "-" + yyyy;
     return today;
   }
 
@@ -57,50 +57,70 @@ export default class Home extends React.Component {
         <div className="mb-3">
           <h2 className="mt-5 app">Games for Today: {this.getDate()}</h2>
 
-          {this.state.loading ?
+          {this.state.loading ? (
             <Loader />
-            :
-            this.state.gamesToday.totalGames > 0 ? (
-              <div>
-                {this.state.gamesList.map((game, i) => {
-                  return (
-                    <div className="card container mt-3" key={i}>
-                      <div className="row">
-                        <div className="col mt-3">
-                          <Link to={`/teams/${game.teams.away.team.id}`}>
-                            <div className="mb-3"><strong>{game.teams.away.team.name}</strong></div>
-                            <img src={`./images/${game.teams.away.team.id}.png`} alt="logo" height="150"></img>
-                          </Link>
-                          <div className="mt-3"><h1><strong>{game.teams.away.score}</strong></h1></div>
-                        </div>
-                        <div className="col my-auto">
-                          <div><h1><strong>@</strong></h1></div>
-                          <div>
-                            {game.status.abstractGameState === "Live" ?
-                              <div>
-                                <strong>{game.status.abstractGameState}</strong>
-                                <LiveGameStatus link={game.link}/>
-                              </div>
-                              :
-                              <strong>{game.status.abstractGameState}</strong>}
+          ) : this.state.gamesToday.totalGames > 0 ? (
+            <div>
+              {this.state.gamesList.map((game, i) => {
+                return (
+                  <div className="card container mt-3" key={i}>
+                    <div className="row">
+                      <div className="col mt-3">
+                        <Link to={`/teams/${game.teams.away.team.id}`}>
+                          <div className="mb-3">
+                            <strong>{game.teams.away.team.name}</strong>
                           </div>
+                          <img
+                            src={`./images/${game.teams.away.team.id}.png`}
+                            alt="logo"
+                            height="150"
+                          ></img>
+                        </Link>
+                        <div className="mt-3">
+                          <h1>
+                            <strong>{game.teams.away.score}</strong>
+                          </h1>
                         </div>
+                      </div>
+                      <div className="col my-auto">
+                        <div>
+                          <h1>
+                            <strong>@</strong>
+                          </h1>
+                        </div>
+                        <div>
+                          <LiveGameStatus
+                            link={game.link}
+                            status={game.status.abstractGameState}
+                          />
+                        </div>
+                      </div>
 
-                        <div className="col mt-3">
-                          <Link to={`/teams/${game.teams.home.team.id}`}>
-                            <div className="mb-3"><strong>{game.teams.home.team.name}</strong></div>
-                            <img src={`./images/${game.teams.home.team.id}.png`} alt="logo" height="150"></img>
-                          </Link>
-                          <div className="mt-3"><h1><strong>{game.teams.home.score}</strong></h1></div>
+                      <div className="col mt-3">
+                        <Link to={`/teams/${game.teams.home.team.id}`}>
+                          <div className="mb-3">
+                            <strong>{game.teams.home.team.name}</strong>
+                          </div>
+                          <img
+                            src={`./images/${game.teams.home.team.id}.png`}
+                            alt="logo"
+                            height="150"
+                          ></img>
+                        </Link>
+                        <div className="mt-3">
+                          <h1>
+                            <strong>{game.teams.home.score}</strong>
+                          </h1>
                         </div>
                       </div>
                     </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="mt-3 app">No Games Today</div>
-            )}
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="mt-3 app">No Games Today</div>
+          )}
         </div>
       </div>
     );

@@ -7,7 +7,7 @@ export default class GoalieTable extends React.Component {
       <div>
         <div className="scroll-table">
           <table className="table table-bordered table-hover">
-            <thead>
+            <thead className="thead-dark">
               <tr>
                 <th title="Season" scope="col">
                   Season
